@@ -1,6 +1,6 @@
 <template>
   <header class="container-fluid">
-    <div class="input-group mb-3">
+    <!-- <div class="input-group mb-3">
       <input
         type="text"
         class="form-control"
@@ -8,15 +8,38 @@
         aria-label="Ricerca Film"
         aria-describedby="button-addon2"
         v-model.trim="query"
-        @keyup.enter="filmSearch(query)"
+        @keyup.enter="movieSearch(query)"
       />
       <button
         class="btn btn-outline-secondary"
         type="button"
         id="button-addon2"
-        @click="filmSearch(query)"
+        @click="movieSearch(query)"
       >
         Cerca
+      </button>
+    </div> -->
+
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ricerca ..."
+        v-model.trim="query"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        @click="movieSearch(query)"
+      >
+        Film
+      </button>
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        @click="tvSearch(query)"
+      >
+        Serie TV
       </button>
     </div>
   </header>
@@ -39,7 +62,7 @@ export default {
     };
   },
   methods: {
-    filmSearch(query) {
+    movieSearch(query) {
       axios
         .get(this.api.searchMovie, {
           params: {
@@ -49,9 +72,24 @@ export default {
           },
         })
         .then((res) => {
-          // console.log(res.data.results);
-          // this.$emit("filmSearch", res.data.results);
-          this.$emit("filmSearch", res.data);
+          this.$emit("search", res.data, "movie");
+          this.query = "";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    tvSearch(query) {
+      axios
+        .get(this.api.searchTv, {
+          params: {
+            api_key: this.api.apiKey,
+            language: this.api.language,
+            query,
+          },
+        })
+        .then((res) => {
+          this.$emit("search", res.data, "tv");
           this.query = "";
         })
         .catch((error) => {

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header @filmSearch="headerSearch" />
+    <Header @search="headerSearch" />
     <Main :searchArray="search" />
   </div>
 </template>
@@ -21,8 +21,9 @@ export default {
     };
   },
   methods: {
-    headerSearch(search) {
-      this.search = search.results;
+    headerSearch(search, type) {
+      this.search = [search.results, type];
+      // DEBUG
       console.log(this.search);
     },
   },
