@@ -1,38 +1,30 @@
 <template>
-  <div id="app"></div>
+  <div id="app">
+    <Header @filmSearch="headerSearch" />
+    <Main :searchArray="search" />
+  </div>
 </template>
 
 <script>
-import axios from "axios";
+import Header from "./components/Header.vue";
+import Main from "./components/Main.vue";
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    Header,
+    Main,
+  },
   data() {
     return {
-      api: {
-        searchMovie: "https://api.themoviedb.org/3/search/movie",
-        searchTv: "https://api.themoviedb.org/3/search/tv",
-        apiKey: "f83fba942aa33499ec38f009528f9e77",
-        language: "it-IT",
-      },
+      search: [],
     };
   },
-  created() {
-    axios
-      .get(this.api.searchMovie, {
-        params: {
-          api_key: this.api.apiKey,
-          language: this.api.language,
-          query: "ritorno al futuro",
-        },
-      })
-      .then(function(res) {
-        console.log(res.data.results);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+  methods: {
+    headerSearch(search) {
+      this.search = search.results;
+      console.log(this.search);
+    },
   },
 };
 </script>
