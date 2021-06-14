@@ -18,11 +18,21 @@ export default {
   data() {
     return {
       search: [],
+      page: "",
     };
   },
   methods: {
     headerSearch(search, type) {
-      this.search = [search.results, type];
+      this.page = search.page;
+      this.search = search.results;
+      this.search.forEach((element) => {
+        if (type == "movie") {
+          element.media_type = "movie";
+        }
+        if (type == "tv") {
+          element.media_type = "tv";
+        }
+      });
       // DEBUG
       console.log(this.search);
     },

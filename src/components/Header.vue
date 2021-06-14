@@ -1,31 +1,12 @@
 <template>
-  <header class="container-fluid">
-    <!-- <div class="input-group mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Ricerca Film"
-        aria-label="Ricerca Film"
-        aria-describedby="button-addon2"
-        v-model.trim="query"
-        @keyup.enter="movieSearch(query)"
-      />
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        id="button-addon2"
-        @click="movieSearch(query)"
-      >
-        Cerca
-      </button>
-    </div> -->
-
+  <header class="container-fluid sticky-top">
     <div class="input-group">
       <input
         type="text"
         class="form-control"
-        placeholder="Ricerca ..."
+        placeholder="Cerca film e serieTV ..."
         v-model.trim="query"
+        @keydown.enter="multiSearch(query)"
       />
       <button
         class="btn btn-outline-secondary"
@@ -55,6 +36,7 @@ export default {
       api: {
         searchMovie: "https://api.themoviedb.org/3/search/movie",
         searchTv: "https://api.themoviedb.org/3/search/tv",
+        searchMulti: "https://api.themoviedb.org/3/search/multi",
         apiKey: "f83fba942aa33499ec38f009528f9e77",
         language: "it-IT",
       },
@@ -90,6 +72,23 @@ export default {
         })
         .then((res) => {
           this.$emit("search", res.data, "tv");
+          this.query = "";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    multiSearch(query) {
+      axios
+        .get(this.api.searchMulti, {
+          params: {
+            api_key: this.api.apiKey,
+            language: this.api.language,
+            query,
+          },
+        })
+        .then((res) => {
+          this.$emit("search", res.data);
           this.query = "";
         })
         .catch((error) => {
