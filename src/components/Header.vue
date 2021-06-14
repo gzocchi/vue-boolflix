@@ -41,6 +41,9 @@ export default {
         language: "it-IT",
       },
       query: "",
+      page: "",
+      total_page: "",
+      total_result: "",
     };
   },
   methods: {
@@ -54,6 +57,9 @@ export default {
           },
         })
         .then((res) => {
+          this.page = res.data.page;
+          this.total_page = res.data.total_pages;
+          this.total_result = res.data.total_results;
           this.$emit("search", res.data, "movie");
           this.query = "";
         })
@@ -71,6 +77,9 @@ export default {
           },
         })
         .then((res) => {
+          this.page = res.data.page;
+          this.total_page = res.data.total_pages;
+          this.total_result = res.data.total_results;
           this.$emit("search", res.data, "tv");
           this.query = "";
         })
@@ -88,6 +97,9 @@ export default {
           },
         })
         .then((res) => {
+          this.page = res.data.page;
+          this.total_page = res.data.total_pages;
+          this.total_result = res.data.total_results;
           this.$emit("search", res.data);
           this.query = "";
         })
@@ -101,8 +113,12 @@ export default {
 
 <style scoped lang="scss">
 @import "../assets/style/variables.scss";
-div {
+header {
   height: $header_h;
-  background-color: #fff;
+  background-color: grey;
+
+  div{
+    background-color: white;
+  }
 }
 </style>
