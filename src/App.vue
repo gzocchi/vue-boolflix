@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <Header @search="headerSearch" />
+    <Header
+      @searchMovieTv="multiSearch"
+      @onlyMovie="singleSearch"
+      @onlyTv="singleSearch"
+    />
     <Main :searchArray="search" />
   </div>
 </template>
@@ -18,30 +22,21 @@ export default {
   data() {
     return {
       search: [],
-      page: "",
-      total_page: "",
-      total_result: "",
     };
   },
   methods: {
-    headerSearch(search, type) {
-      this.page = search.page;
-      this.total_page = search.total_pages;
-      this.total_result = search.total_results;
+    singleSearch(search, type) {
       this.search = search.results;
       this.search.forEach((element) => {
-        // if (type == "movie") {
-        //   element.media_type = "movie";
-        // }
-        // if (type == "tv") {
-        //   element.media_type = "tv";
-        // }
-        if (type) {
-          element.media_type = type;
-        }
+        element.media_type = type;
       });
       // DEBUG
-      console.log(this.search);
+      // console.log(this.search);
+    },
+    multiSearch(array) {
+      this.search = array;
+      // DEBUG
+      // console.log(array);
     },
   },
 };

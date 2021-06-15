@@ -25,4 +25,8 @@ export default {
 
 <style scoped lang="scss">
 @import "../assets/style/variables.scss";
+
+.poster {
+  max-height: 70vh;
+}
 </style>

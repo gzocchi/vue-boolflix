@@ -15,7 +15,7 @@
             class="form-control"
             placeholder="Cerca film e serieTV ..."
             v-model.trim="query"
-            @keydown.enter="multiSearch(query)"
+            @keydown.enter="saerchMovieTv(query)"
           />
           <button
             class="btn btn-outline-secondary my_btn"
@@ -47,7 +47,6 @@ export default {
       api: {
         searchMovie: "https://api.themoviedb.org/3/search/movie",
         searchTv: "https://api.themoviedb.org/3/search/tv",
-        searchMulti: "https://api.themoviedb.org/3/search/multi",
         apiKey: "f83fba942aa33499ec38f009528f9e77",
         language: "it-IT",
       },
@@ -56,9 +55,41 @@ export default {
     };
   },
   methods: {
+    saerchMovieTv(query) {
+      this.currentSearch = query;
+
+      let movie =
+        "https://api.themoviedb.org/3/search/movie?api_key=f83fba942aa33499ec38f009528f9e77&language=it-IT&query=" +
+        query;
+      let tv =
+        "https://api.themoviedb.org/3/search/tv?api_key=f83fba942aa33499ec38f009528f9e77&language=it-IT&query=" +
+        query;
+
+      const requestMovie = axios.get(movie);
+      const requestTv = axios.get(tv);
+
+      axios
+        .all([requestMovie, requestTv])
+        .then(
+          axios.spread((...responses) => {
+            const responseMovie = responses[0].data.results;
+            const responseTv = responses[1].data.results;
+            responseMovie.forEach((element) => {
+              element.media_type = "movie";
+            });
+            responseTv.forEach((element) => {
+              element.media_type = "tv";
+            });
+            this.$emit("searchMovieTv", [...responseMovie, ...responseTv]);
+            this.query = "";
+          })
+        )
+        .catch((error) => {
+          console.err(error);
+        });
+    },
     movieSearch(query) {
       this.currentSearch = query;
-      this.query = "";
       axios
         .get(this.api.searchMovie, {
           params: {
@@ -68,7 +99,9 @@ export default {
           },
         })
         .then((res) => {
-          this.$emit("search", res.data, "movie");
+          this.singleData = res.data;
+          this.$emit("onlyMovie", this.singleData, "movie");
+          this.query = "";
         })
         .catch((error) => {
           console.log(error);
@@ -76,7 +109,6 @@ export default {
     },
     tvSearch(query) {
       this.currentSearch = query;
-      this.query = "";
       axios
         .get(this.api.searchTv, {
           params: {
@@ -86,25 +118,9 @@ export default {
           },
         })
         .then((res) => {
-          this.$emit("search", res.data, "tv");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    multiSearch(query) {
-      this.currentSearch = query;
-      this.query = "";
-      axios
-        .get(this.api.searchMulti, {
-          params: {
-            api_key: this.api.apiKey,
-            language: this.api.language,
-            query,
-          },
-        })
-        .then((res) => {
-          this.$emit("search", res.data, false);
+          this.singleData = res.data;
+          this.$emit("onlyTv", this.singleData, "tv");
+          this.query = "";
         })
         .catch((error) => {
           console.log(error);
