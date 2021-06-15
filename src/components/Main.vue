@@ -1,12 +1,13 @@
 <template>
   <main class="container py-3">
     <section id="row d-flex align-items-start gallery">
-      <Poster
+      <div
+        class="col-12 col-sm-6 col-md-4 col-lg-3 d-inline-flex p-2 my-2 poster"
         v-for="(item, index) in searchArray"
         :key="index"
-        :item="item"
-        class="col-6 col-md-4 col-lg-3 d-inline-flex flex-column p-2 my-2 poster"
-      />
+      >
+        <Poster :item="item" />
+      </div>
     </section>
   </main>
 </template>
@@ -24,12 +25,4 @@ export default {
 
 <style scoped lang="scss">
 @import "../assets/style/variables.scss";
-
-main {
-  height: 100%;
-
-  .poster {
-      height: 60vh;
-  }
-}
 </style>

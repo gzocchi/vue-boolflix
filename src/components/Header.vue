@@ -1,27 +1,38 @@
 <template>
   <header class="container-fluid sticky-top">
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Cerca film e serieTV ..."
-        v-model.trim="query"
-        @keydown.enter="multiSearch(query)"
-      />
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        @click="movieSearch(query)"
+    <div class="row align-items-center">
+      <div
+        class="logo d-flex justify-content-center col-12 col-sm-6 col-md-2 col-lg-3 "
       >
-        Film
-      </button>
-      <button
-        class="btn btn-outline-secondary"
-        type="button"
-        @click="tvSearch(query)"
+        <img src="../assets/img/logo.png" alt="Logo" />
+      </div>
+      <div
+        class="search col-12 col-sm-6 col-md-6 offset-md-4 col-lg-4 offset-lg-5"
       >
-        Serie TV
-      </button>
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Cerca film e serieTV ..."
+            v-model.trim="query"
+            @keydown.enter="multiSearch(query)"
+          />
+          <button
+            class="btn btn-outline-secondary my_btn"
+            type="button"
+            @click="movieSearch(query)"
+          >
+            Film
+          </button>
+          <button
+            class="btn btn-outline-secondary my_btn"
+            type="button"
+            @click="tvSearch(query)"
+          >
+            Serie TV
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -41,13 +52,13 @@ export default {
         language: "it-IT",
       },
       query: "",
-      page: "",
-      total_page: "",
-      total_result: "",
+      currentSearch: "",
     };
   },
   methods: {
     movieSearch(query) {
+      this.currentSearch = query;
+      this.query = "";
       axios
         .get(this.api.searchMovie, {
           params: {
@@ -57,17 +68,15 @@ export default {
           },
         })
         .then((res) => {
-          this.page = res.data.page;
-          this.total_page = res.data.total_pages;
-          this.total_result = res.data.total_results;
           this.$emit("search", res.data, "movie");
-          this.query = "";
         })
         .catch((error) => {
           console.log(error);
         });
     },
     tvSearch(query) {
+      this.currentSearch = query;
+      this.query = "";
       axios
         .get(this.api.searchTv, {
           params: {
@@ -77,17 +86,15 @@ export default {
           },
         })
         .then((res) => {
-          this.page = res.data.page;
-          this.total_page = res.data.total_pages;
-          this.total_result = res.data.total_results;
           this.$emit("search", res.data, "tv");
-          this.query = "";
         })
         .catch((error) => {
           console.log(error);
         });
     },
     multiSearch(query) {
+      this.currentSearch = query;
+      this.query = "";
       axios
         .get(this.api.searchMulti, {
           params: {
@@ -97,11 +104,7 @@ export default {
           },
         })
         .then((res) => {
-          this.page = res.data.page;
-          this.total_page = res.data.total_pages;
-          this.total_result = res.data.total_results;
-          this.$emit("search", res.data);
-          this.query = "";
+          this.$emit("search", res.data, false);
         })
         .catch((error) => {
           console.log(error);
@@ -114,11 +117,23 @@ export default {
 <style scoped lang="scss">
 @import "../assets/style/variables.scss";
 header {
-  height: $header_h;
+  min-height: $header_h;
   background-color: grey;
-
-  div{
-    background-color: white;
+  .row {
+    height: 100%;
+    .logo {
+      height: 100%;
+      img {
+        height: 100%;
+      }
+    }
+    .search {
+      .my_btn {
+        color: black;
+        border-color: black;
+        background-color: grey;
+      }
+    }
   }
 }
 </style>

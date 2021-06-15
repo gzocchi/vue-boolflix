@@ -50,7 +50,6 @@ export default {
       vote: Math.round(this.item.vote_average / 2),
       imgUrl: "https://image.tmdb.org/t/p",
       imgDimension: "/w342",
-      //   fullStar: '<i class="fas fa-star"></i>',
       fullStar: "fas",
       emptyStar: "far",
     };
@@ -62,7 +61,6 @@ export default {
 @import "../assets/style/variables.scss";
 
 div {
-  height: 100%;
   overflow: hidden;
   border: 1px solid white;
   background-color: rgba(255, 255, 255, 0.6);
@@ -78,10 +76,10 @@ div {
       text-transform: uppercase;
     }
 
-    .fas.fa-star {
-      color: orange;
+    i.fas {
+      color: gold;
     }
-    .far.fa-star {
+    i.far {
       color: white;
     }
   }
