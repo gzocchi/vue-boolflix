@@ -15,7 +15,7 @@
       />
     </div>
 
-    <div v-else class="poster_info p-2 m-0">
+    <div v-else class="poster_info p-3 m-0">
       <h3>{{ item.title ? item.title : item.name }}</h3>
 
       <ul class="p-0 m-0 fw-light">
@@ -77,19 +77,17 @@ export default {
 
 .poster_card {
   width: 100%;
-  max-height: 400px;
+  height: 400px;
   overflow: hidden;
   border: 1px solid white;
-  // background-color: rgba(255, 255, 255, 0.6);
 
-  // .poster_info,
   .poster_image {
-    width: 100%;
-    height: 100%;
-    
-  }
-  .poster_image.hover{
-    opacity: 0.1;
+    img {
+      height: 100%;
+      width: 100%;
+      object-position: center;
+      object-fit: cover;
+    }
   }
   .poster_info {
     ul {
@@ -105,14 +103,6 @@ export default {
       i.far {
         color: white;
       }
-    }
-  }
-  .poster_image {
-    img {
-      height: 100%;
-      width: 100%;
-      object-position: center;
-      object-fit: cover;
     }
   }
 }

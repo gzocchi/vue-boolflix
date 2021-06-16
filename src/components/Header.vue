@@ -6,13 +6,13 @@
           logo
           d-flex
           justify-content-center
-          col-12 col-sm-6 col-md-2 col-lg-3
+          col-12 col-sm-5 col-lg-3
         "
       >
         <img src="../assets/img/logo.png" alt="Logo" />
       </div>
       <div
-        class="search col-12 col-sm-6 col-md-6 offset-md-4 col-lg-4 offset-lg-5"
+        class="search col-12 col-sm-7 col-lg-4 offset-lg-5"
       >
         <div class="input-group">
           <input
@@ -158,9 +158,9 @@ header {
     }
     .search {
       .my_btn {
-        color: black;
-        border-color: black;
-        background-color: grey;
+        color: white;
+        border-color: grey;
+        background-color: black;
       }
     }
   }
