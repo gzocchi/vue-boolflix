@@ -2,7 +2,12 @@
   <header class="container-fluid sticky-top">
     <div class="row align-items-center">
       <div
-        class="logo d-flex justify-content-center col-12 col-sm-6 col-md-2 col-lg-3 "
+        class="
+          logo
+          d-flex
+          justify-content-center
+          col-12 col-sm-6 col-md-2 col-lg-3
+        "
       >
         <img src="../assets/img/logo.png" alt="Logo" />
       </div>
@@ -56,8 +61,6 @@ export default {
   },
   methods: {
     saerchMovieTv(query) {
-      this.currentSearch = query;
-
       let movie =
         "https://api.themoviedb.org/3/search/movie?api_key=f83fba942aa33499ec38f009528f9e77&language=it-IT&query=" +
         query;
@@ -80,8 +83,12 @@ export default {
             responseTv.forEach((element) => {
               element.media_type = "tv";
             });
-            this.$emit("searchMovieTv", [...responseMovie, ...responseTv]);
             this.query = "";
+            if ([...responseMovie, ...responseTv].length == 0) {
+              return alert("La ricerca non ha prodotto nessun risultato");
+            }
+            this.currentSearch = query;
+            this.$emit("searchMovieTv", [...responseMovie, ...responseTv]);
           })
         )
         .catch((error) => {
@@ -89,7 +96,6 @@ export default {
         });
     },
     movieSearch(query) {
-      this.currentSearch = query;
       axios
         .get(this.api.searchMovie, {
           params: {
@@ -99,16 +105,19 @@ export default {
           },
         })
         .then((res) => {
+          this.query = "";
+          if (res.data.results.length == 0) {
+            return alert("La ricerca non ha prodotto nessun risultato");
+          }
+          this.currentSearch = query;
           this.singleData = res.data;
           this.$emit("onlyMovie", this.singleData, "movie");
-          this.query = "";
         })
         .catch((error) => {
           console.log(error);
         });
     },
     tvSearch(query) {
-      this.currentSearch = query;
       axios
         .get(this.api.searchTv, {
           params: {
@@ -118,9 +127,13 @@ export default {
           },
         })
         .then((res) => {
+          this.query = "";
+          if (res.data.results.length == 0) {
+            return alert("La ricerca non ha prodotto nessun risultato");
+          }
+          this.currentSearch = query;
           this.singleData = res.data;
           this.$emit("onlyTv", this.singleData, "tv");
-          this.query = "";
         })
         .catch((error) => {
           console.log(error);
@@ -133,7 +146,7 @@ export default {
 <style scoped lang="scss">
 @import "../assets/style/variables.scss";
 header {
-  min-height: $header_h;
+  height: $header_h;
   background-color: grey;
   .row {
     height: 100%;
