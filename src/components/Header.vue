@@ -147,7 +147,7 @@ export default {
 @import "../assets/style/variables.scss";
 header {
   height: $header_h;
-  background-color: grey;
+  background-color: black;
   .row {
     height: 100%;
     .logo {
