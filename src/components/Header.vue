@@ -62,11 +62,9 @@ export default {
   methods: {
     saerchMovieTv(query) {
       let movie =
-        "https://api.themoviedb.org/3/search/movie?api_key=f83fba942aa33499ec38f009528f9e77&language=it-IT&query=" +
-        query;
+        `${this.api.searchMovie}?api_key=${this.api.apiKey}&language=${this.api.language}&query=${query}`;
       let tv =
-        "https://api.themoviedb.org/3/search/tv?api_key=f83fba942aa33499ec38f009528f9e77&language=it-IT&query=" +
-        query;
+        `${this.api.searchTv}?api_key=${this.api.apiKey}&language=${this.api.language}&query=${query}`;
 
       const requestMovie = axios.get(movie);
       const requestTv = axios.get(tv);
