@@ -5,7 +5,10 @@
     @mouseleave="hover = false"
   >
     <div v-if="!hover" class="poster_image">
-      <img :src="item.poster_path ? imageUrl : placeholder" :alt="item.title" />
+      <img
+        :src="item.poster_path ? imageUrl : placeholder"
+        :alt="item.title ? item.title : item.name"
+      />
     </div>
 
     <div v-else class="poster_info p-3 m-0">
@@ -16,7 +19,18 @@
           <span class="fw-bold">Titolo Originale:</span>
           {{ item.original_title ? item.original_title : item.original_name }}
         </li>
-        <li>
+        <li
+          v-if="
+            item.original_language == 'en' || item.original_language == 'it'
+          "
+        >
+          <img
+            :src="require(`../assets/img/${item.original_language}.png`)"
+            :alt="`flag-${item.original_language}`"
+            class="flag"
+          />
+        </li>
+        <li v-else>
           <span class="flag-icon" :class="`flag-icon-${iso_3166_1}`"></span>
         </li>
         <li>
@@ -37,32 +51,26 @@ import axios from "axios";
 
 export default {
   name: "Poster",
-  props: ["item"],
+  props: {
+    item: {
+      type: Object,
+      require: true,
+    },
+  },
   data() {
     return {
       imgUrl: "https://image.tmdb.org/t/p",
       imgDimension: "/w342",
       placeholder:
-        "http://www.premionapoli.it/wp-content/uploads/2015/10/pix-vertical-placeholder.jpg",
+        "https://www.altavod.com/assets/images/poster-placeholder.png",
+      // "https://www.2johnsrestaurant.com/wp-content/uploads/2014/06/placeholder_image1.png",
+      // "http://www.premionapoli.it/wp-content/uploads/2015/10/pix-vertical-placeholder.jpg",
       hover: false,
       iso_3166_1: "",
     };
   },
-  computed: {
-    imageUrl() {
-      return this.imgUrl + this.imgDimension + this.item.poster_path;
-    },
-    vote() {
-      return Math.round(this.item.vote_average / 2);
-    },
-  },
-  created() {
-    if (this.item.original_language == "en") {
-      this.iso_3166_1 = "gb";
-    }
-    if (this.item.original_language == "it") {
-      this.iso_3166_1 = "it";
-    } else {
+  methods: {
+    getCountriIso() {
       axios
         .get(
           `https://api.themoviedb.org/3/${this.item.media_type}/${this.item.id}`,
@@ -80,7 +88,18 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    }
+    },
+  },
+  computed: {
+    imageUrl() {
+      return this.imgUrl + this.imgDimension + this.item.poster_path;
+    },
+    vote() {
+      return Math.round(this.item.vote_average / 2);
+    },
+  },
+  created() {
+    this.getCountriIso();
   },
 };
 </script>
@@ -91,13 +110,11 @@ export default {
 
 .poster_card {
   width: 100%;
-  height: 400px;
+  height: 450px;
   overflow: hidden;
-  border: 1px solid white;
 
   .poster_image {
     img {
-      // height: 100%;
       width: 100%;
       object-position: center;
       object-fit: cover;
@@ -108,7 +125,7 @@ export default {
       list-style: none;
 
       .flag {
-        height: 15px;
+        height: 14px;
       }
 
       i.fas {

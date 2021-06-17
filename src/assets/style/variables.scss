@@ -1,2 +1,2 @@
-$header_h: 10vh;
-$main_h: 100vh - $header_h;
+$header_h: 70px;
+$main_h: calc(100vh - $header_h);

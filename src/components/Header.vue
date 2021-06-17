@@ -1,6 +1,6 @@
 <template>
   <header class="container-fluid sticky-top">
-    <div class="row align-items-center">
+    <div class="row d-flex flex-row justify-content-start align-items-center">
       <div
         class="
           logo
@@ -12,7 +12,7 @@
         <img src="../assets/img/logo.png" alt="Logo" />
       </div>
       <div
-        class="search col-12 col-sm-7 col-lg-4 offset-lg-5"
+        class="search col-12 col-sm-7 col-lg-4 offset-lg-5 my-2"
       >
         <div class="input-group">
           <input
@@ -144,7 +144,7 @@ export default {
 <style scoped lang="scss">
 @import "../assets/style/variables.scss";
 header {
-  height: $header_h;
+  min-height: $header_h;
   background-color: black;
   .row {
     height: 100%;

@@ -25,7 +25,12 @@ export default {
   components: {
     Poster,
   },
-  props: ["searchArray"],
+  props: {
+    searchArray: {
+      type: Array,
+      require: true,
+    },
+  },
 };
 </script>
 
